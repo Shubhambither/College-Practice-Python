@@ -112,7 +112,7 @@ def experience_index(sheet):
       
     # print("mape",mape)
     # print("len of mape",len(mape))    
-    return (math.fsum(mapfeel)+math.fsum(mapsat)+math.fsum(mape))/len(3*feeling)
+    return (math.fsum(mapfeel)+math.fsum(mapsat)+math.fsum(mape))/3
 
 def data_continuity(sheet,expected_days):
     vrd=[]
