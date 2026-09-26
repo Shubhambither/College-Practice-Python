@@ -52,29 +52,95 @@ def academic_activity(sheet):
     return (math.fsum(study)+math.fsum(c))/len(study)
 def experience_index(sheet):
     feeling=[]
+    mapfeel=[]
     satisfaction=[]
+    mapsat=[]
     energy=[]
+    mape=[]
     for row in range(8,44):
         value=ws.cell(row=row,column=11).value
         if value is not None:
-            feeling.append(value)  
+            feeling.append(value)
+    # print("Feeling",feeling)
+    # print("Len of feeling",len(feeling))
+    for feel in feeling:
+        if feel=="Excellent":
+            mapfeel.append(1)
+        elif feel=="Good":
+            mapfeel.append(2)
+        elif feel=="Neutral":
+            mapfeel.append(3)
+        elif feel=="Low":
+            mapfeel.append(4)
+        elif feel =="Stressed":
+            mapfeel.append(5)
+    # print(mapfeel)
+    # print("len of mapfeel",len(mapfeel))
     for row in range(8,44):
         value=ws.cell(row=row,column=12).value
         if value is not None:
-            satisfaction.append(value)  
+            satisfaction.append(value)
+    # print("Satis",satisfaction)
+    # print("len of satis",len(satisfaction))
+    for satis in satisfaction:
+        if satis=="Very Satisfied":
+            mapsat.append(1)
+        elif satis=="Satisfied":
+            mapsat.append(2)
+        elif satis=="Neutral":
+            mapsat.append(3)
+        elif satis=="Unsatisfied":
+            mapsat.append(4)
+        elif satis =="Very Unsatisfied":
+            mapsat.append(5)
+    # print("mapsat",mapsat)
+    # print("len of mapsat",len(mapsat))  
     for row in range(8,44):
         value=ws.cell(row=row,column=13).value
         if value is not None:
-            energy.append(value)  
-    return (math.fsum(feeling)+math.fsum(satisfaction)+math.fsum(energy))/len(3*feeling)
+            energy.append(value)
+    # print("energy",energy)
+    # print("len of energy",len(energy))
+    for e in energy:
+        
+        if e=='High':
+            mape.append(1)
+        elif e=='Medium':
+            mape.append(2)
+        elif e=='Low':
+            mape.append(3)
+      
+    # print("mape",mape)
+    # print("len of mape",len(mape))    
+    return (math.fsum(mapfeel)+math.fsum(mapsat)+math.fsum(mape))/len(3*feeling)
+
+def data_continuity(sheet,expected_days):
+    vrd=[]
+    for row in range(8,44):
+        value=ws.cell(row=row,column=1).value
+        if value is not None:
+            vrd.append(value) 
+    return (len(vrd)*100/expected_days)  
 
 wb = load_workbook('12603996.xlsx', data_only=True)
 ws=wb["Daily Log"]
-print("Tech Productivity : ",tech_productivity(ws))
-print("Academic Activity : ",academic_activity(ws))
-print("Physical_activity : ",physical_activity(ws))
-print("Sleep & Recovery : ",sleep_recovery(ws))
-print("Free/Unaccounted : ",activity_balance(ws))
-print("Time Utilization : ",time_utilization(ws))
-print("Experience : ",experience_index(ws))
 
+tpi=tech_productivity(ws)
+print("Tech Productivity : ",tpi)
+aai=academic_activity(ws)
+print("Academic Activity : ",aai)
+phai=physical_activity(ws)
+print("Physical_activity : ",phai)
+sri=sleep_recovery(ws)
+print("Sleep & Recovery : ",sri)
+
+print("Free/Unaccounted : ",activity_balance(ws))
+tui=time_utilization(ws)
+print("Time Utilization : ",tui)
+ei=experience_index(ws)
+print("Experience : ",ei)
+dci=data_continuity(ws,36)
+print("Data Contiuity : ",dci)
+
+pai=0.15*tpi+0.20*aai+0.15*phai+0.20*sri+0.15*tui+0.10*ei+0.05*dci
+print("Personal Activity Index = ",pai)
